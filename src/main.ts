@@ -1,7 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { Module } from '@nestjs/common';
+import { AppModule } from './app.module';
+//import { Module } from '@nestjs/common';
 
-@Module({
+/*@Module({
   providers: [
     {
       provide: 'DATABASE_CONNECTION',
@@ -10,9 +11,7 @@ import { Module } from '@nestjs/common';
       },
     },
   ],
-})
-export class AppModule {}
-
+})*/
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { abortOnError: false });
   await app.listen(3000);

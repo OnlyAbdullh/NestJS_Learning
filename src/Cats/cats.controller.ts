@@ -6,6 +6,8 @@ import {
   Header,
   Redirect,
   Query,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 
 @Controller('cats')
@@ -31,5 +33,14 @@ export class CatsController {
     } else if (version === '6') {
       return { url: 'https://docs.nestjs.com/v6/' };
     }
+  }
+
+  @Get(':id/:type')
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('type') type: string,
+  ): string {
+    console.log(`ID: ${id}, Type: ${type}`);
+    return `Cat ID: ${id}, Type: ${type}`;
   }
 }

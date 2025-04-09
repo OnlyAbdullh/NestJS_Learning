@@ -8,15 +8,20 @@ import {
   Query,
   Param,
   ParseIntPipe,
+  Body,
 } from '@nestjs/common';
+import { CreateCatDto } from './create-cat.dto';
 
 @Controller('cats')
 export class CatsController {
   @HttpCode(201)
   @Header('Cache-Control', 'no-store')
   @Post()
-  create(): string {
-    return 'This action adds a new cat';
+  async(@Body() createCatDto: CreateCatDto) {
+    return {
+      message: 'Cat has been created successfully',
+      data: createCatDto,
+    };
   }
 
   @HttpCode(200)

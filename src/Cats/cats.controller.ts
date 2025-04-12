@@ -11,23 +11,29 @@ import {
   Body,
 } from '@nestjs/common';
 import { CreateCatDto } from './create-cat.dto';
+import { CatsService } from './cats.service';
+import { Cat } from './cat.interface';
 
 @Controller('cats')
 export class CatsController {
+  constructor(private readonly catsService: CatsService) {}
+
   @HttpCode(201)
   @Header('Cache-Control', 'no-store')
-  @Post()
-  async(@Body() createCatDto: CreateCatDto) {
-    return {
-      message: 'Cat has been created successfully',
-      data: createCatDto,
-    };
+  @Post('/add')
+  async create(@Body() createCatDto: CreateCatDto) {
+    this.catsService.create(createCatDto);
   }
 
   @HttpCode(200)
   @Get('find/*') //any path after the find word is works.
-  findAll(): string {
-    return 'This action returns all cats';
+  findAllbyQuery(@Query('age') age: number, @Query('breed') breed: string): string {
+    return `This action returns all cats filtered by age: ${age} and breed: ${breed}`;
+  }
+
+  @Get()
+  async findAll(): Promise<Cat[]> {
+    return this.catsService.findAll();
   }
 
   @Get('docs')

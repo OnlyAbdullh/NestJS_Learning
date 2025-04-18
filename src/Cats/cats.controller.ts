@@ -9,6 +9,8 @@ import {
   Param,
   ParseIntPipe,
   Body,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { CatsService } from './cats.service';
@@ -40,8 +42,21 @@ export class CatsController {
   }
 
   @Get()
-  async findAll(): Promise<Cat[]> {
-    return this.catsService.findAll();
+  findAll() {
+    try {
+      this.catsService.findAll();
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'This is a custom message',
+        },
+        HttpStatus.FORBIDDEN,
+        {
+          cause: error,
+        },
+      );
+    }
   }
 
   @Get('docs')
@@ -62,4 +77,11 @@ export class CatsController {
     console.log(`ID: ${id}, Type: ${type}`);
     return `Cat ID: ${id}, Type: ${type}`;
   }
+
+  @Get('exception')
+  getSomething() {
+    throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+  }
+
+  // getSomething() {throw new Error('Oops');} // this will give 500 internal server error
 }

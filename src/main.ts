@@ -22,6 +22,7 @@ async function bootstrap() {
       transform: true, // auto-transform types to match DTO
     }),
   );
+  //app.use(logger); using global middleware
   await app.listen(3000);
 }
 

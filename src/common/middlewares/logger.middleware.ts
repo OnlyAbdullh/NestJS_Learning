@@ -8,3 +8,10 @@ export class LoggerMiddleware implements NestMiddleware {
     next();
   }
 }
+
+//Functional middleware should use:when it’s simple and doesn’t require dependency injection.
+/*
+export function logger(req: Request, res: Response, next: NextFunction) {
+  console.log(`Request...`);
+  next();
+};*/

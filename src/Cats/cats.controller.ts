@@ -32,7 +32,10 @@ export class CatsController {
 
   @HttpCode(200)
   @Get('find/*') //any path after the find word is works.
-  findAllbyQuery(@Query('age') age: number, @Query('breed') breed: string): string {
+  findAllbyQuery(
+    @Query('age') age: number,
+    @Query('breed') breed: string,
+  ): string {
     return `This action returns all cats filtered by age: ${age} and breed: ${breed}`;
   }
 

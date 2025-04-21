@@ -28,7 +28,7 @@ export class CatsController {
   @HttpCode(201)
   @Header('Cache-Control', 'no-store')
   @Post('/add')
-  async create(@Body() createCatDto: CreateCatDto) {
+  create(@Body() createCatDto: CreateCatDto) {
     this.catsService.create(createCatDto);
   }
 

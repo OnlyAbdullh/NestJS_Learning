@@ -5,9 +5,24 @@ import { CounterService } from './tests/counter.service';
 import { CatsModule } from './Cats/cats.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Cat } from './Cats/entities/cat.entity';
 
 @Module({
-  imports: [CatsModule, ConfigModule.forRoot({ isGlobal: true })],
+  imports: [
+    CatsModule,
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'root',
+      database: 'test',
+      entities: [Cat],
+      synchronize: true,
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService, CounterService],
 })

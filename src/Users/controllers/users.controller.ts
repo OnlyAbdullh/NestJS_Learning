@@ -10,13 +10,13 @@ import {
   HttpStatus,
   Query,
   UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UppercasePipe } from '../pipes/validation.pipe';
-import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { RegisterUserDto } from '../schemas/user.schema';
+import { RegisterUserDto } from '../dto/register-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -27,12 +27,18 @@ export class UsersController {
     return `Hello, ${name}!`;
   }
 
+  @UsePipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  )
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
-  @UsePipes(ZodValidationPipe)
   @Post('register')
   async register(@Body() dto: RegisterUserDto) {
     await this.usersService.create(dto);

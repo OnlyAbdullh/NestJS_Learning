@@ -9,11 +9,14 @@ import {
   ParseIntPipe,
   HttpStatus,
   Query,
+  UsePipes,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UppercasePipe } from '../pipes/validation.pipe';
+import { ZodValidationPipe } from '@anatine/zod-nestjs';
+import { RegisterUserDto } from '../schemas/user.schema';
 
 @Controller('users')
 export class UsersController {
@@ -26,8 +29,14 @@ export class UsersController {
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    console.log('hey controller');
     return this.usersService.create(createUserDto);
+  }
+
+  @UsePipes(ZodValidationPipe)
+  @Post('register')
+  async register(@Body() dto: RegisterUserDto) {
+    await this.usersService.create(dto);
+    return { message: 'User registered successfully' };
   }
 
   @Get()

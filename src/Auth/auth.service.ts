@@ -21,11 +21,23 @@ export class AuthService {
     if (!isMatch) {
       throw new UnauthorizedException();
     }
-    console.log('JWT_SECRET:', process.env.JWT_SECRET);
+    //console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
     const payload = { sub: user.id, username: user.username };
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
+    const accessToken = await this.jwtService.signAsync({
+      ...payload,
+      tokenType: 'access',
+    }, {
+      expiresIn: '15m',
+    });
+
+    /*   const refreshToken = await this.jwtService.signAsync({
+         ...payload,
+         tokenType: 'refresh',
+       }, {
+         expiresIn: '7d',
+       });*/
+    return { access_token: accessToken };
+
   }
 }

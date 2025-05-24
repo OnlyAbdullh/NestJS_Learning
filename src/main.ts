@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
+import { AuthGuard } from './guards/auth.guard';
 //import { Module } from '@nestjs/common';
 
 /*@Module({
@@ -23,6 +24,7 @@ async function bootstrap() {
       }),
     );*/
   app.useGlobalPipes(new ZodValidationPipe());
+  //app.useGlobalGuards(new AuthGuard());
   //app.use(logger); using global middleware
   await app.listen(3000);
 }

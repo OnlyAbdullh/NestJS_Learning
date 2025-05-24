@@ -6,8 +6,8 @@ import { CatsModule } from './Cats/cats.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Cat } from './Cats/entities/cat.entity';
 import { UsersModule } from './Users/users.module';
+import { AuthModule } from './Auth/auth.module';
 
 @Module({
   imports: [
@@ -24,16 +24,18 @@ import { UsersModule } from './Users/users.module';
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_DATABASE'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true, // استخدم false في بيئة الإنتاج
+        synchronize: false, // استخدم false في بيئة الإنتاج
       }),
     }),
     UsersModule,
+   // AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, CounterService],
 })
 export class AppModule implements NestModule {
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService) {
+  }
 
   onModuleInit() {
     const dbUser = this.configService.get<string>('DATABASE_USER');

@@ -11,17 +11,24 @@ import {
   Query,
   UsePipes,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UppercasePipe } from '../pipes/validation.pipe';
 import { RegisterUserDto } from '../dto/register-user.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { BusinessGuard } from '../../guards/business.guard';
+import { AuthMetaData } from '../../Decorators/auth.metadata.decorator';
 
 @Controller('users')
+@UseGuards(AuthGuard, BusinessGuard)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {
+  }
 
+  @AuthMetaData('SkipAuthorizationCheck')
   @Get('hey')
   sayHello(@Query('name', UppercasePipe) name: string) {
     return `Hello, ${name}!`;

@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const RegisterUserSchema = z
   .object({
-    name: z
+    username: z
       .string()
       .min(3, { message: 'Username must be at least 3 characters long' })
       .max(20, { message: 'Username must not exceed 20 characters' }),

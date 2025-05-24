@@ -23,12 +23,13 @@ import { BusinessGuard } from '../../guards/business.guard';
 import { AuthMetaData } from '../../Decorators/auth.metadata.decorator';
 
 @Controller('users')
-@UseGuards(AuthGuard, BusinessGuard)
+//@UseGuards(AuthGuard, BusinessGuard)
+@UseGuards(AuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {
   }
 
-  @AuthMetaData('SkipAuthorizationCheck')
+
   @Get('hey')
   sayHello(@Query('name', UppercasePipe) name: string) {
     return `Hello, ${name}!`;
@@ -41,6 +42,7 @@ export class UsersController {
       transform: true,
     }),
   )
+  @AuthMetaData('SkipAuthorizationCheck')
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);

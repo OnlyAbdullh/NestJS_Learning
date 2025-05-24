@@ -4,10 +4,6 @@ import {
   IsEmail,
   MinLength,
   MaxLength,
-  IsInt,
-  Min,
-  IsOptional,
-  IsNumber,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -24,10 +20,4 @@ export class CreateUserDto {
   @MinLength(6, { message: 'Password must be at least 6 characters long' })
   password: string;
 
-  @IsOptional()
-  @Type(() => Number)
-  @IsNumber({}, { message: 'Age must be a number' })
-  @IsInt({ message: 'Age must be an integer' })
-  @Min(18, { message: 'Age must be at least 18' })
-  age?: number;
 }
